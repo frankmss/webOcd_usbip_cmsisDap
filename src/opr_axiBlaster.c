@@ -284,7 +284,8 @@ void oper_affJtag_mainLoop(volatile axiBlaster_reg *ptr, int bytesLeft,
 
 int axiBlaster_init(axiBlaster *mod) {
   int fd_uio;
-  uint64_t target = AXIBLASTER_BASE_ADDR;
+  //uint64_t target = AXIBLASTER_BASE_ADDR;
+  uint64_t target = 0x43c30000;
   fd_uio = open("/dev/mem", O_RDWR | O_SYNC);
   if (fd_uio < 1) {
     fprintf(stderr, "FAILED TO open UIO Device");
@@ -305,7 +306,7 @@ int axiBlaster_init(axiBlaster *mod) {
     fprintf(stderr, "\nInfo :map 0x%llx->0x%p \n", target, (mod->map_base));
   }
   fprintf(stderr, "init axiBlaster ... ok\n");
-  sleep(1);
+  //sleep(1);
   //munmap((void *)mod->map_base, MAP_SIZE);
   return 0;
 }
