@@ -94,6 +94,7 @@ void write32bit_queue(volatile axiBlaster_reg *jtr, uint32_t len, uint32_t tms,
     if ((jtr->full_offset & 0xf00) == 0) {
       break;
     } else {
+      if(verbose)fprintf(stderr,"axiBlasterMod->offset=0x%x\n",jtr->full_offset);
       usleep(1);
     }
   }

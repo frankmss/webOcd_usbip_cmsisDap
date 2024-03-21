@@ -20,7 +20,12 @@ OBJ_DIR     := obj
 # 	forTest.c 
 SRCS				:= \
 	main.c \
-	opr_axiBlaster.c
+	opr_axiBlaster.c \
+	vstubmod.c \
+	vstub_list.c \
+	vstub_net.c \
+	usbip_pkt.c \
+	cmsis-dap-usbip.c
 	
 	
 
@@ -32,7 +37,8 @@ INC_DIR     := $(SRC_DIR)
 CC          := gcc
 # CFLAGS      := -Wall -Wextra -Werror -std=gnu99 
 LKFLAGS     := -lSDL2
-CFLAGS      := -Wall -Wextra -std=gnu99
+# CFLAGS      := -Wall -Wextra -std=gnu99 -DLINUX 
+CFLAGS      := -Wextra -std=gnu99 -DLINUX
 CPPFLAGS    := -I $(INC_DIR)
 
 #------------------------------------------------#

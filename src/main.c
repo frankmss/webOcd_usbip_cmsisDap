@@ -113,5 +113,5 @@ int main() {
   reset_affjtag(axiBlasterMod->offset, 100);
   reset_only_affjtag(axiBlasterMod->offset);
   //oper_affJtag_mainLoop(axiBlasterMod->offset, bytesLeft, bitsLeft, nr_bytes, buffer, result);
-  write32bit_queue(axiBlasterMod->offset,8,0x55,0xaa,0);
+  write32bit_queue(axiBlasterMod->offset,8,0x0f,0xaa,0);
 }
