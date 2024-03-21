@@ -18,7 +18,7 @@ typedef struct {
 
 struct axiBlasterMod{
   void *map_base;
-  axiBlaster_reg *offset;
+  volatile axiBlaster_reg *offset;
 
 };
 typedef struct axiBlasterMod axiBlaster;
