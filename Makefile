@@ -16,9 +16,11 @@ NAME := webOcd_usbip_cmsisDap
 
 SRC_DIR     := src
 OBJ_DIR     := obj
-SRCS        := \
-	main.c      \
-	opr_axiBlaster.c      
+# SRCS        := \
+# 	forTest.c 
+SRCS				:= \
+	main.c \
+	opr_axiBlaster.c
 	
 	
 
