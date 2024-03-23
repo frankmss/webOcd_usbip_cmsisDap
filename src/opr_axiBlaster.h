@@ -31,6 +31,7 @@ void reset_affjtag(volatile axiBlaster_reg *ptr, int32_t N_ns);
 void reset_only_affjtag(volatile axiBlaster_reg *ptr);
 void write32bit_queue(volatile axiBlaster_reg *jtr, uint32_t len, uint32_t tms,
                       uint32_t tdi, uint32_t cb);
-
+void read32bit_queue(volatile axiBlaster_reg *jtr, int32_t nB,
+                     uint32_t *result);
                       
 #endif

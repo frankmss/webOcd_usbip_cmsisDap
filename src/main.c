@@ -49,6 +49,8 @@
 #include <fcntl.h>  // O_RDWR | O_SYNC
 #include <sys/mman.h>
 #include <unistd.h>  //_SC_PAGESIZE
+#include "vstub_main.h"
+#include "free-dap/dap.h"
 
 #define MAP_SIZE 0x10000
 // int main_a(axiBlaster *axiBlasterMod) {
@@ -112,6 +114,9 @@ int main() {
   unsigned char buffer[2048], result[1024];
   reset_affjtag(axiBlasterMod->offset, 100);
   reset_only_affjtag(axiBlasterMod->offset);
-  //oper_affJtag_mainLoop(axiBlasterMod->offset, bytesLeft, bitsLeft, nr_bytes, buffer, result);
-  write32bit_queue(axiBlasterMod->offset,8,0x0f,0xaa,0);
+  map_axiBlasterReg(axiBlasterMod);
+  dap_init();
+  // oper_affJtag_mainLoop(axiBlasterMod->offset, bytesLeft, bitsLeft, nr_bytes, buffer, result);
+  // write32bit_queue(axiBlasterMod->offset,8,0x0f,0xaa,0);
+  vstub_main();
 }

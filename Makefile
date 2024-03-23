@@ -21,11 +21,13 @@ OBJ_DIR     := obj
 SRCS				:= \
 	main.c \
 	opr_axiBlaster.c \
-	vstubmod.c \
-	vstub_list.c \
-	vstub_net.c \
-	usbip_pkt.c \
-	cmsis-dap-usbip.c
+	vstub/vstubmod.c \
+	vstub/vstub_list.c \
+	vstub/vstub_net.c \
+	vstub/usbip_pkt.c \
+	vstub/cmsis-dap-usbip.c \
+	free-dap/dap.c \
+	vstub_main.c
 	
 	
 
@@ -33,10 +35,10 @@ SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # INC_DIR     := src/3thpart/mongoose  src/sdl_thread_lib
-INC_DIR     := $(SRC_DIR)
+INC_DIR     := $(SRC_DIR) $(SRC_DIR)/vstub $(SRC_DIR)/free-dap
 CC          := gcc
 # CFLAGS      := -Wall -Wextra -Werror -std=gnu99 
-LKFLAGS     := -lSDL2
+LKFLAGS     := -lSDL2 -lpthread
 # CFLAGS      := -Wall -Wextra -std=gnu99 -DLINUX 
 CFLAGS      := -Wextra -std=gnu99 -DLINUX
 CPPFLAGS    := -I $(INC_DIR)

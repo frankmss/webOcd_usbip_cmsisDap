@@ -192,6 +192,20 @@ typedef struct __attribute__ ((__packed__)) _CONFIG_CDC
 	USB_ENDPOINT_DESCRIPTOR		dev_ep2;
 } CONFIG_CDC;
 
+//cahill add hit config descriptor
+
+
+typedef struct __attribute__ ((__packed__)) _CONFIG_CMSIS_DAP
+{
+	USB_CONFIGURATION_DESCRIPTOR	dev_conf0;
+	USB_INTERFACE_DESCRIPTOR	dev_inface;
+	//USB_HID_DESCRIPTOR        des_des;
+	USB_ENDPOINT_DESCRIPTOR		dev_ep0;
+	USB_ENDPOINT_DESCRIPTOR		dev_ep1;
+	USB_ENDPOINT_DESCRIPTOR		dev_ep2;
+} CONFIG_CMSIS_DAP;
+
+
 //=================================================================================
 //USBIP data struct 
 

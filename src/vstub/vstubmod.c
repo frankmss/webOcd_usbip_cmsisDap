@@ -10,7 +10,7 @@ vstubmod_t	*mods_bound[MAX_STUBS];
 // extern vstubmod_t	vstubmod_cp210x;
 // extern vstubmod_t	vstubmod_avrmkii;
 // extern vstubmod_t	vstubmod_arduino;
-
+extern vstubmod_t vstubmod_cmsis_dap;
 static vstubmod_t	*mods_all[] = {
 	// &vstubmod_hid_mouse,
 	// &vstubmod_hid_keyboard,
@@ -19,6 +19,7 @@ static vstubmod_t	*mods_all[] = {
 	// &vstubmod_cp210x,
 	// &vstubmod_avrmkii,
 	// &vstubmod_arduino
+	& vstubmod_cmsis_dap,
 };
 
 vstubmod_t *

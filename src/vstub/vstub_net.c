@@ -120,6 +120,23 @@ reply_cmd_submit(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit, char *data, unsig
 
 	return ret;
 }
+BOOL
+reply_cmd_submit_noop(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit)
+{
+	USBIP_RET_SUBMIT	*ret_submit;
+	BOOL	ret;
+
+	ret_submit = create_ret_submit(cmd_submit);
+	ret_submit->command = 0x0003;
+	ret_submit->direction = 0x00;//dir_out
+	ret_submit->status = 0;
+	ret_submit->actual_length = 0;
+	ret_submit->error_count = 0;
+	ret = send_ret_submit(vstub, ret_submit, 0, 0);
+	free(ret_submit);
+
+	return ret;
+}
 
 BOOL
 reply_cmd_submit_err(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit, int errcode)

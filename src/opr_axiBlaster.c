@@ -94,7 +94,8 @@ void write32bit_queue(volatile axiBlaster_reg *jtr, uint32_t len, uint32_t tms,
     if ((jtr->full_offset & 0xf00) == 0) {
       break;
     } else {
-      if(verbose)fprintf(stderr,"axiBlasterMod->offset=0x%x\n",jtr->full_offset);
+      if (verbose)
+        fprintf(stderr, "axiBlasterMod->offset=0x%x\n", jtr->full_offset);
       usleep(1);
     }
   }
@@ -284,10 +285,7 @@ void oper_affJtag_mainLoop(volatile axiBlaster_reg *ptr, int bytesLeft,
   memcpy(result, tmpResult, nr_bytes);
 }
 
-
-
 int axiBlaster_init(axiBlaster *axiBlasterMod) {
-
   int fd_uio;
 
   fd_uio = open("/dev/mem", O_RDWR | O_SYNC);
@@ -297,10 +295,10 @@ int axiBlaster_init(axiBlaster *axiBlasterMod) {
   }
 
   uint64_t target = 0x43c30000;  // netOcd axiff_1
-  //int16_t port = 2544;
-  // uint64_t target = 0x43c40000; //netOcd axiff_0
-  // int16_t port = 2543;
-  
+  // int16_t port = 2544;
+  //  uint64_t target = 0x43c40000; //netOcd axiff_0
+  //  int16_t port = 2543;
+
   unsigned int pagesize = (unsigned)sysconf(_SC_PAGESIZE);
   axiBlasterMod->map_base =
       (unsigned int *)mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
@@ -312,8 +310,8 @@ int axiBlaster_init(axiBlaster *axiBlasterMod) {
     close(fd_uio);
     return -1;
   } else {
-    fprintf(stderr, "\nInfo :map 0x%llx->0x%p \n",
-            target, axiBlasterMod->offset);
+    fprintf(stderr, "\nInfo :map 0x%llx->0x%p \n", target,
+            axiBlasterMod->offset);
   }
   // reset_affjtag(ptr, 5);
   fprintf(stderr, "Info : Xilinx xvc init ok\n");
