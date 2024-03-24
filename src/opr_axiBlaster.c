@@ -285,6 +285,75 @@ void oper_affJtag_mainLoop(volatile axiBlaster_reg *ptr, int bytesLeft,
   memcpy(result, tmpResult, nr_bytes);
 }
 
+void oper_affJtag_opr_queue(volatile axiBlaster_reg *ptr,
+                            affJtag_pkg *affjpkg) {
+  uint32_t tmp_tdo;
+  int alread_RBn = 0;
+  int alread_SBn = 0;
+  uint32_t stms = 0, stdi = 0, slen = 0, scb = 0;
+  // uint8_t *result = affjpkg->tdo[0].u8;
+  int32_t bytesLeft = affjpkg->bytesLeft;
+  int32_t i = 0;
+  int32_t needBereadBytes = affjpkg->needBereadBytes;
+  while (1) {                               // main loop
+    if ((ptr->empty_offset & 0x01) != 1) {  // rec fifo is not empty
+      while (1) {                           // rec all data
+        if ((ptr->empty_offset & 0x01) == 1) {
+          break;
+        } else {
+          tmp_tdo = ptr->tdo_offset;
+          affjpkg->tdo[alread_RBn / 4].u32 = tmp_tdo;
+          alread_RBn = alread_RBn + 4;
+        }
+      }
+
+    }  //// send queue// sff_status
+
+    else if (((ptr->full_offset & 0x0f) == 0x00) && (alread_SBn <= bytesLeft)) {
+      while (1) {  // until ptr->full_offset & 0x0f == 0xf
+
+        if (((ptr->full_offset & 0x0f) != 0x00) || (alread_SBn >= bytesLeft)) {
+          break;
+        } else {
+          scb = affjpkg->wcb[alread_SBn / 4].u32;
+          slen = affjpkg->len[alread_SBn / 4].u32;
+          stms = affjpkg->tms[alread_SBn / 4].u32;
+          stdi = affjpkg->tdi[alread_SBn / 4].u32;
+          // LOG_DEBUG_IO(
+          //     "in while(1) affjtag write last "
+          //     "slen(%d),stms(%d),stdi(%d),scb(%d)",
+          //     slen, stms, stdi, scb);
+          // LOG_DEBUG_IO("alread_SBn / 4 = 0X%08X", (alread_SBn / 4));
+          ptr->lenght_offset = slen;
+          ptr->tms_offset = stms;
+          ptr->tdi_offset = stdi;
+          ptr->wrback_offset = scb;
+
+          alread_SBn += 4;
+        }
+      }
+    }
+
+    if ((alread_RBn >= needBereadBytes) && (alread_SBn >= bytesLeft) &&
+        ((ptr->full_offset & 0x0f00) ==
+         0x0f00)) {  // if rec num > bytesLeft ,return;
+      // LOG_DEBUG_IO("already send bytes(%d)  should be sent bytes(%d)",
+      //              alread_SBn, bytesLeft);
+      // LOG_DEBUG_IO("already rec  bytes(%d)  should be rec bytes(%d)",
+      //              alread_RBn, needBereadBytes);
+      // for (i = 0; i < needBereadBytes / 4; i++) {
+      //   LOG_DEBUG_IO("tdo:(%i)[0x%08x] ", i, affjpkg->tdo[i].u32);
+      // }
+      // for (i = 0; i < bytesLeft / 4; i++) {
+      //   LOG_DEBUG_IO("(%i):tdi[0x%08x]tms[0x%08x]len[0x%08x]wcb[0x%08x] ", i,
+      //                affjpkg->tdi[i].u32, affjpkg->tms[i].u32,
+      //                affjpkg->len[i].u32, affjpkg->wcb[i].u32);
+      // }
+      break;  // break; main while(1)
+    }
+  }
+}
+
 int axiBlaster_init(axiBlaster *axiBlasterMod) {
   int fd_uio;
 

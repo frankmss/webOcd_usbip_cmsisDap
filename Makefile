@@ -20,7 +20,7 @@ OBJ_DIR     := obj
 # 	forTest.c 
 SRCS				:= \
 	main.c \
-	opr_axiBlaster.c \
+	axiFFJtag.c \
 	vstub/vstubmod.c \
 	vstub/vstub_list.c \
 	vstub/vstub_net.c \

@@ -466,7 +466,7 @@ static bool handle_non_control_transfer(vstub_t* vstub,
       //                   portMAX_DELAY);
       //   xTaskNotifyGive(kDAPTaskHandle);
       memcpy(&(d2uPkg.submit), cmd_submit, sizeof(USBIP_CMD_SUBMIT));
-      reply_cmd_submit(vstub, cmd_submit, NULL, 0);
+      // reply_cmd_submit(vstub, cmd_submit, NULL, 0);
       //   if (xSemaphoreTake(data_response_mux, portMAX_DELAY) == pdTRUE) {
       //     ++dapResponePkgs;
       //     xSemaphoreGive(data_response_mux);
@@ -477,6 +477,7 @@ static bool handle_non_control_transfer(vstub_t* vstub,
           dap_process_request(u2dPkg.buf, DAPBUFFSIZE, d2uPkg.buf, DAPBUFFSIZE);
       d2uPkg.len = dap_respone;
       packetSize = DAP_HANDLE_SIZE;
+      reply_cmd_submit(vstub, cmd_submit, NULL, 0);
     } else {  // cmd_submit->direction = 1
       fprintf(stderr, "direction=output \n");
       struct usbip2dapPkg* pdap_out;
