@@ -445,7 +445,7 @@ static bool handle_non_control_transfer(vstub_t* vstub,
   static size_t packetSize = 0;
   if (cmd_submit->ep == 0x01) {
     if (cmd_submit->direction == 0) {
-      fprintf(stderr, "direction=input\n");
+      //fprintf(stderr, "direction=input\n");
 
       memset(u2dPkg.buf, 0, DAPBUFFSIZE);
 
@@ -479,7 +479,7 @@ static bool handle_non_control_transfer(vstub_t* vstub,
       packetSize = DAP_HANDLE_SIZE;
       reply_cmd_submit(vstub, cmd_submit, NULL, 0);
     } else {  // cmd_submit->direction = 1
-      fprintf(stderr, "direction=output \n");
+      //fprintf(stderr, "direction=output \n");
       struct usbip2dapPkg* pdap_out;
       pdap_out = (struct usbip2dapPkg*)(&d2uPkg);
 
@@ -492,7 +492,7 @@ static bool handle_non_control_transfer(vstub_t* vstub,
         reply_cmd_submit_noop(vstub, cmd_submit);
         fprintf(stderr, "No Message can be response !!!\n");
       } else {
-        fprintf(stderr, "REAL RESPONSE\n");
+        //fprintf(stderr, "REAL RESPONSE\n");
         
         pdap_out->submit.seqnum += 1;
 

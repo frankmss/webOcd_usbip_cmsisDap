@@ -84,8 +84,8 @@ show_ret_submit(USBIP_RET_SUBMIT *ret_submit)
 	ep = ret_submit->ep;
 	if (ret_submit->direction)
 		ep |= 0x80;
-	printf("RET_SUBMIT[%04d] ep:%0hx len: %d, ", ret_submit->seqnum, ep, ret_submit->actual_length);
-	printf("devid:%x, sf:%d, np:%d, ec:%d\n", ret_submit->devid, ret_submit->start_frame, ret_submit->number_of_packets, ret_submit->error_count);
+	//printf("RET_SUBMIT[%04d] ep:%0hx len: %d, ", ret_submit->seqnum, ep, ret_submit->actual_length);
+	//printf("devid:%x, sf:%d, np:%d, ec:%d\n", ret_submit->devid, ret_submit->start_frame, ret_submit->number_of_packets, ret_submit->error_count);
 }
 
 static BOOL

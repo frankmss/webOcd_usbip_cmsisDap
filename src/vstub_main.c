@@ -104,7 +104,7 @@ static BOOL handle_attach(vstub_t *vstub, unsigned devno, OP_REP_IMPORT *rep) {
 
   vstub->mod = mod;
 
-  printf("device attached: %s\n", mod->desc);
+  //printf("device attached: %s\n", mod->desc);
 
   return TRUE;
 }
@@ -122,7 +122,7 @@ static void handle_get_descriptor_string(vstub_t *vstub,
     char supported_langs[] = {0x04, USB_DESCRIPTOR_STRING, 0x09, 0x04};
 
     reply_cmd_submit(vstub, cmd_submit, supported_langs, 4);
-    printf(" get string descriptor: supported langs\n");
+    //printf(" get string descriptor: supported langs\n");
     return;
   }
 
@@ -156,7 +156,7 @@ static void handle_get_descriptor_string(vstub_t *vstub,
       dsc_str[i * 2 + 2] = str[i];
       dsc_str[i * 2 + 2 + 1] = 0;
     }
-    printf(" get string descriptor: %s\n", str);
+    //printf(" get string descriptor: %s\n", str);
     reply_cmd_submit(vstub, cmd_submit, dsc_str, len_dsc);
   }
 }
@@ -170,36 +170,36 @@ handle_get_descriptor(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit)
 	switch (setup_pkt->wValue.hiByte) {
 	case TUSB_DESC_DEVICE:
 		// Device
-		fprintf(stderr," get_descriptor: Device\n");
+		//fprintf(stderr," get_descriptor: Device\n");
 		reply_cmd_submit(vstub, cmd_submit, (char *)vstub->mod->dev_dsc, sizeof(USB_DEVICE_DESCRIPTOR));
 		break;
 	case TUSB_DESC_CONFIGURATION:
 		// configuration
-		fprintf(stderr," get_descriptor: Configuration wLength(%d)\n",setup_pkt->wLength);
+		//fprintf(stderr," get_descriptor: Configuration wLength(%d)\n",setup_pkt->wLength);
 		reply_cmd_submit(vstub, cmd_submit, (char *)vstub->mod->conf, setup_pkt->wLength);
 		break;
 	case TUSB_DESC_STRING:
-		fprintf(stderr, "get_descriptor: string\n");
+		//fprintf(stderr, "get_descriptor: string\n");
 		handle_get_descriptor_string(vstub, cmd_submit);
 		break;
 	case TUSB_DESC_DEVICE_QUALIFIER:
 		// qualifier
-		fprintf(stderr," get_descriptor: Qualifier\n");
+		//fprintf(stderr," get_descriptor: Qualifier\n");
 		reply_cmd_submit(vstub, cmd_submit, (char *)vstub->mod->dev_qua, setup_pkt->wLength);
 		break;
 	case TUSB_DESC_OTHER_SPEED_CONFIG:
-		fprintf(stderr, "get_descriptor: TUSB_DESC_OTHER_SPEED_CONFIG");
+		//fprintf(stderr, "get_descriptor: TUSB_DESC_OTHER_SPEED_CONFIG");
 		reply_cmd_submit(vstub, cmd_submit, 0, 0);
 		break;
 	case TUSB_DESC_BOS:
 		//int bos_len = sizeof(usbip_dap_link_desc_bos);
-		fprintf(stderr, "get_descriptor: descript bos reques_len(%d) desc_bos_len(%d)",setup_pkt->wLength,33);
+		//fprintf(stderr, "get_descriptor: descript bos reques_len(%d) desc_bos_len(%d)",setup_pkt->wLength,33);
 		//esp_log_buffer_hex(TAG, vstub->mod->desc_bos, 33);
 
 		reply_cmd_submit(vstub, cmd_submit, (char *)vstub->mod->desc_bos, (setup_pkt->wLength)>33? 33:(setup_pkt->wLength));
 		break;
 	case TUSB_DESC_CS_CONFIGURATION:
-		fprintf(stderr, "get_descriptor: desc cs configuration req_len(%d)",setup_pkt->wLength);
+		//fprintf(stderr, "get_descriptor: desc cs configuration req_len(%d)",setup_pkt->wLength);
 		// reply_cmd_submit(vstub, cmd_submit, (char *)hid_report_descriptor, setup_pkt->wLength);
 		reply_cmd_submit(vstub, cmd_submit, 0,0);
 		break;
@@ -251,14 +251,14 @@ static void handle_get_status(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit) {
   data[1] = 0x00;
 
   reply_cmd_submit(vstub, cmd_submit, data, 2);
-  printf("GET_STATUS\n");
+  //printf("GET_STATUS\n");
 }
 
 static void handle_set_configuration(vstub_t *vstub,
                                      USBIP_CMD_SUBMIT *cmd_submit) {
   setup_pkt_t *setup_pkt = (setup_pkt_t *)cmd_submit->setup;
 
-  printf(" handle_set_configuration: %hu\n", setup_pkt->wValue.W);
+  // printf(" handle_set_configuration: %hu\n", setup_pkt->wValue.W);
   reply_cmd_submit(vstub, cmd_submit, NULL, 0);
 }
 
@@ -317,7 +317,7 @@ handle_control_transfer_common(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit)
 
 	bmRequestType = setup_pkt->bmRequestType;
 	bRequest = setup_pkt->bRequest;
-	fprintf(stderr, "bmRequestType(%d) ... bRequest(%d) \n",bmRequestType,bRequest);
+	//fprintf(stderr, "bmRequestType(%d) ... bRequest(%d) \n",bmRequestType,bRequest);
 	switch (bmRequestType) {
 	case 0x80:
 	case 0x81: //come from esp8266-wifi-cmsis-dap.info
@@ -347,14 +347,14 @@ handle_control_transfer_common(vstub_t *vstub, USBIP_CMD_SUBMIT *cmd_submit)
 	case 0x01:
 		if (bRequest == 0x0B) {
 			//SET_INTERFACE
-			fprintf(stderr,"SET_INTERFACE\n");
+			//fprintf(stderr,"SET_INTERFACE\n");
 			reply_cmd_submit(vstub, cmd_submit, NULL, 0);
 			return TRUE;
 		}
 		break;
 	case 0xc0: //cahill add Microsoft OS 2.0 vendor-specific descriptor
 		if(bRequest == 0x01){
-			fprintf(stderr, "GET MSOS 2.0 vendor-specific descriptor");
+			//fprintf(stderr, "GET MSOS 2.0 vendor-specific descriptor");
 			reply_cmd_submit(vstub, cmd_submit, (char *)vstub->mod->ms0s20Des, 0xa2);
 		}else{
 			fprintf(stderr, "Microsoft OS 2.0 bReques(0x%x)", bRequest);
@@ -429,15 +429,15 @@ static void show_cmd_submit(USBIP_CMD_SUBMIT *cmd_submit) {
   int i;
 
   ep = cmd_submit->ep;
-  if (cmd_submit->direction) ep |= 0x80;
-  printf("CMD_SUBMIT[%04d] ep:%0hx len: %d, ", cmd_submit->seqnum, ep,
-         cmd_submit->transfer_buffer_length);
-  printf("setup:");
-  for (i = 0; i < 8; i++) printf("%02hhx", cmd_submit->setup[i]);
+  // if (cmd_submit->direction) ep |= 0x80;
+  // printf("CMD_SUBMIT[%04d] ep:%0hx len: %d, ", cmd_submit->seqnum, ep,
+  //        cmd_submit->transfer_buffer_length);
+  // printf("setup:");
+  // for (i = 0; i < 8; i++) printf("%02hhx", cmd_submit->setup[i]);
 
-  printf(", devid:%x, flags:%x, np:%d, intv:%d\n", cmd_submit->devid,
-         cmd_submit->transfer_flags, cmd_submit->number_of_packets,
-         cmd_submit->interval);
+  // printf(", devid:%x, flags:%x, np:%d, intv:%d\n", cmd_submit->devid,
+  //        cmd_submit->transfer_flags, cmd_submit->number_of_packets,
+  //        cmd_submit->interval);
 }
 
 static BOOL handle_attached(vstub_t *vstub) {

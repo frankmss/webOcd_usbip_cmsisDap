@@ -89,11 +89,11 @@ void axi_ffjtag_opr_queue(affJtag_pkg *affjpkg) {
           slen = affjpkg->len[alread_SBn / 4].u32;
           stms = affjpkg->tms[alread_SBn / 4].u32;
           stdi = affjpkg->tdi[alread_SBn / 4].u32;
-          fprintf(stderr,
-              "in while(1) affjtag write last "
-              "slen(%d),stms(%d),stdi(%d),scb(%d) \n",
-              slen, stms, stdi, scb);
-          fprintf(stderr,"alread_SBn / 4 = 0X%08X \n", (alread_SBn / 4));
+          // fprintf(stderr,
+          //     "in while(1) affjtag write last "
+          //     "slen(%d),stms(%d),stdi(%d),scb(%d) \n",
+          //     slen, stms, stdi, scb);
+          // fprintf(stderr,"alread_SBn / 4 = 0X%08X \n", (alread_SBn / 4));
           ptr->lenght_offset = slen;
           ptr->tms_offset = stms;
           ptr->tdi_offset = stdi;
@@ -107,18 +107,18 @@ void axi_ffjtag_opr_queue(affJtag_pkg *affjpkg) {
     if ((alread_RBn >= needBereadBytes) && (alread_SBn >= bytesLeft) &&
         ((ptr->full_offset & 0x0f00) ==
          0x0f00)) {  // if rec num > bytesLeft ,return;
-      fprintf(stderr,"already send bytes(%d)  should be sent bytes(%d)\n",
-                   alread_SBn, bytesLeft);
-      fprintf(stderr,"already rec  bytes(%d)  should be rec bytes(%d)\n",
-                   alread_RBn, needBereadBytes);
-      for (i = 0; i < needBereadBytes / 4; i++) {
-        fprintf(stderr,"tdo:(%i)[0x%08x] \n", i, affjpkg->tdo[i].u32);
-      }
-      for (i = 0; i < bytesLeft / 4; i++) {
-        fprintf(stderr,"(%i):tdi[0x%08x]tms[0x%08x]len[0x%08x]wcb[0x%08x] \n", i,
-                     affjpkg->tdi[i].u32, affjpkg->tms[i].u32,
-                     affjpkg->len[i].u32, affjpkg->wcb[i].u32);
-      }
+      // fprintf(stderr,"already send bytes(%d)  should be sent bytes(%d)\n",
+      //              alread_SBn, bytesLeft);
+      // fprintf(stderr,"already rec  bytes(%d)  should be rec bytes(%d)\n",
+      //              alread_RBn, needBereadBytes);
+      // for (i = 0; i < needBereadBytes / 4; i++) {
+      //   fprintf(stderr,"tdo:(%i)[0x%08x] \n", i, affjpkg->tdo[i].u32);
+      // }
+      // for (i = 0; i < bytesLeft / 4; i++) {
+      //   fprintf(stderr,"(%i):tdi[0x%08x]tms[0x%08x]len[0x%08x]wcb[0x%08x] \n", i,
+      //                affjpkg->tdi[i].u32, affjpkg->tms[i].u32,
+      //                affjpkg->len[i].u32, affjpkg->wcb[i].u32);
+      // }
       break;  // break; main while(1)
     }
   }
@@ -143,7 +143,7 @@ int axi_ffjtag_init(void) {
   }
   fprintf(stderr, "Mapped axiFFJtag vaddr %p paddr 0x%x \n",
           xlnx_axiffjtag_xvc->ptr, baseaddr);
-  reset_affjtag(xlnx_axiffjtag_xvc->ptr, 600);
+  reset_affjtag(xlnx_axiffjtag_xvc->ptr, 100);
   reset_only_affjtag(xlnx_axiffjtag_xvc->ptr);
   return ERROR_OK;
 }
