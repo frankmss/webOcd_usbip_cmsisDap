@@ -27,9 +27,11 @@
 #include <string.h>
 #include <sys/param.h>
 
+#include "cmsis-dap-usbip.h"
+
 #define TAG "cmsis-dap-usbip"
 
-#include "vstub/vstub.h"
+
 // #include "vstub.h"
 
 // from tinyusb define cahill add
@@ -405,7 +407,7 @@ static int bsize = 0;
 //  #include "dap.h"
 //  #include "freertos/ringbuf.h"
 
-#define DAPBUFFSIZE 512
+
 uint8_t dap_in[DAPBUFFSIZE + 1];
 uint8_t dap_out[DAPBUFFSIZE + 1];
 size_t dap_respone = 0;
@@ -416,13 +418,7 @@ static int dapResponePkgs = 0;
 // static SemaphoreHandle_t data_response_mux = NULL;
 #define DAP_BUFFER_NUM 10
 
-struct usbip2dapPkg {
-  int32_t len;
-  uint8_t buf[DAPBUFFSIZE];
-  USBIP_CMD_SUBMIT submit;
-};
 
-#define DAP_HANDLE_SIZE (sizeof(struct usbip2dapPkg) + sizeof(USBIP_CMD_SUBMIT))
 
 struct usbip2dapPkg u2dPkg, d2uPkg;
 bool shuld_dap_exec = false;
@@ -440,6 +436,8 @@ unsigned short linecs = 0;
 
 #include "free-dap/dap.h"
 
+#include <semaphore.h>
+extern sem_t dap2usb_mutex, usb2dap_mutex;
 static bool handle_non_control_transfer(vstub_t* vstub,
                                         USBIP_CMD_SUBMIT* cmd_submit) {
   static size_t packetSize = 0;
@@ -466,20 +464,25 @@ static bool handle_non_control_transfer(vstub_t* vstub,
       //                   portMAX_DELAY);
       //   xTaskNotifyGive(kDAPTaskHandle);
       memcpy(&(d2uPkg.submit), cmd_submit, sizeof(USBIP_CMD_SUBMIT));
-      // reply_cmd_submit(vstub, cmd_submit, NULL, 0);
+      reply_cmd_submit(vstub, cmd_submit, NULL, 0);
       //   if (xSemaphoreTake(data_response_mux, portMAX_DELAY) == pdTRUE) {
       //     ++dapResponePkgs;
       //     xSemaphoreGive(data_response_mux);
       //   }
+      #if  0
       int32_t dap_respone = 0;
       memset((char *)(d2uPkg.buf), 0, DAPBUFFSIZE);
       dap_respone =
           dap_process_request(u2dPkg.buf, DAPBUFFSIZE, d2uPkg.buf, DAPBUFFSIZE);
       d2uPkg.len = dap_respone;
       packetSize = DAP_HANDLE_SIZE;
-      reply_cmd_submit(vstub, cmd_submit, NULL, 0);
+      #endif 
+      // reply_cmd_submit(vstub, cmd_submit, NULL, 0);
+      packetSize = DAP_HANDLE_SIZE; //always response
+      sem_post(&usb2dap_mutex);
     } else {  // cmd_submit->direction = 1
       //fprintf(stderr, "direction=output \n");
+      sem_wait(&dap2usb_mutex);
       struct usbip2dapPkg* pdap_out;
       pdap_out = (struct usbip2dapPkg*)(&d2uPkg);
 

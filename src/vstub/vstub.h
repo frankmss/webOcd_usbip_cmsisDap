@@ -81,4 +81,8 @@ void close_vstub(vstub_t *vstub);
 vstubmod_t *find_vstubmod(unsigned devno);
 BOOL handle_unattached_devlist(vstub_t *vstub);
 
+
+#define QUEUE_NAME "/my_queue"
+#define MAX_MESSAGES 10
+#define MAX_MSG_SIZE 256
 #endif

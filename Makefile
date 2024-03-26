@@ -38,7 +38,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 INC_DIR     := $(SRC_DIR) $(SRC_DIR)/vstub $(SRC_DIR)/free-dap
 CC          := gcc
 # CFLAGS      := -Wall -Wextra -Werror -std=gnu99 
-LKFLAGS     := -lSDL2 -lpthread
+LKFLAGS     := -lSDL2 -lpthread -lrt
 # CFLAGS      := -Wall -Wextra -std=gnu99 -DLINUX 
 CFLAGS      := -Wextra -std=gnu99 -DLINUX
 CPPFLAGS    := -I $(INC_DIR)
