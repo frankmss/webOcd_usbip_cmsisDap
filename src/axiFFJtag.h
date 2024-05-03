@@ -66,4 +66,20 @@ struct xlnx_axiffjtag_xvc {
 
 int axi_ffjtag_init(void) ;
 void axi_ffjtag_opr_queue(affJtag_pkg *affjpkg) ;
+void setAxiFFJtagFreq_api(int clkNs);
+
+
+  //0x43c30000->dap_1
+  //0x43c40000->dap_0
+
+//this is for usbip0
+// #define DAP0
+// #define TCP_SERV_PORT 3240
+// #define AXIFFJTAG_REGBASE 0X43C40000
+// #endif
+
+// this is for usbip1
+#define DAP1
+#define TCP_SERV_PORT 3241
+#define AXIFFJTAG_REGBASE 0X43C30000
 #endif

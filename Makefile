@@ -18,6 +18,8 @@ SRC_DIR     := src
 OBJ_DIR     := obj
 # SRCS        := \
 # 	forTest.c 
+
+## make for vstub cmsis dap 
 SRCS				:= \
 	main.c \
 	axiFFJtag.c \
@@ -28,6 +30,16 @@ SRCS				:= \
 	vstub/cmsis-dap-usbip.c \
 	free-dap/dap.c \
 	vstub_main.c
+
+## make for wireless-esp8266-dap windowsir
+# SRCS				:=\
+# 	main.c \
+# 	axiFFJtag.c \
+# 	free-dap/dap.c \
+# 	windowsair_USBIP/MSOS20_descriptor.c \
+# 	windowsair_USBIP/usb_descriptor.c \
+# 	windowsair_USBIP/tcp_server.c
+	          
 	
 	
 
@@ -36,6 +48,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # INC_DIR     := src/3thpart/mongoose  src/sdl_thread_lib
 INC_DIR     := $(SRC_DIR) $(SRC_DIR)/vstub $(SRC_DIR)/free-dap
+# INC_DIR     := $(SRC_DIR) $(SRC_DIR)/vstub $(SRC_DIR)/windowsair_USBIP
 CC          := gcc
 # CFLAGS      := -Wall -Wextra -Werror -std=gnu99 
 LKFLAGS     := -lSDL2 -lpthread -lrt

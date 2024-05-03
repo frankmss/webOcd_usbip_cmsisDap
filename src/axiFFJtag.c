@@ -18,15 +18,15 @@ void reset_affjtag(volatile affJtag_t *ptr, int32_t N_ns) {
   N_ns = N_ns;
   uint32_t clk = N_ns / CLK_T;
   clk = clk;
-  fprintf(stderr, "affjtag ptr addr(0x%08x)", (uint32_t)ptr);
+  //fprintf(stderr, "affjtag ptr addr(0x%08x)", (uint32_t)ptr);
 
   ptr->jtag_clk_offset = clk;
   ptr->reset_offset = RESET_CMD_CLK;
   usleep(10);
   ptr->reset_offset = 0x0000;
   usleep(10);
-  fprintf(stderr, "affjtag ptr->clk_offset val(0x%08x)\n",
-          (uint32_t)ptr->jtag_clk_offset);
+  // fprintf(stderr, "affjtag ptr->clk_offset val(0x%08x)\n",
+  //         (uint32_t)ptr->jtag_clk_offset);
 }
 
 void reset_only_affjtag(volatile affJtag_t *ptr) {
@@ -124,8 +124,18 @@ void axi_ffjtag_opr_queue(affJtag_pkg *affjpkg) {
   }
 }
 
+
+void setAxiFFJtagFreq_api(int clkNs){
+
+  reset_affjtag(xlnx_axiffjtag_xvc->ptr, clkNs);
+  reset_only_affjtag(xlnx_axiffjtag_xvc->ptr);
+}
+
 int axi_ffjtag_init(void) {
-  uint32_t baseaddr = 0X43C30000;
+  //0x43c30000->dap_1
+  //0x43c40000->dap_0
+  // uint32_t baseaddr = 0X43C40000;
+  uint32_t baseaddr = AXIFFJTAG_REGBASE;
   xlnx_axiffjtag_xvc->fd = open("/dev/mem", O_RDWR | O_SYNC);
   if (xlnx_axiffjtag_xvc->fd < 0) {
     fprintf(stderr, "Failed to open /dev/mem.  Check permissions.\n");

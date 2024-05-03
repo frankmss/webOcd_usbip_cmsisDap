@@ -20,7 +20,15 @@
 
 // DAP_CONFIG_PRODUCT_STR must contain "CMSIS-DAP" to be compatible with the standard
 #define DAP_CONFIG_VENDOR_STR "Dumbo Devices"
-#define DAP_CONFIG_PRODUCT_STR "CMSIS-DAP Adapter"
+
+#include "axiFFJtag.h"
+#ifdef DAP0
+#define DAP_CONFIG_PRODUCT_STR "CMSIS-DAP Adapter 0"
+#endif
+#ifdef DAP1
+#define DAP_CONFIG_PRODUCT_STR "CMSIS-DAP Adapter 1"
+#endif
+
 #define DAP_CONFIG_SER_NUM_STR dap_serial_number
 #define DAP_CONFIG_CMSIS_DAP_VER_STR "2.0.0"
 
